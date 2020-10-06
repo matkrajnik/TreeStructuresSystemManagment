@@ -19,7 +19,6 @@ $('#confirm-add').on('click', (e) => {
     var Id = $(target).data('id');
     if ($('#name').length < 1) {
         $('add-input-name').val("This field is required and should contain at least 1 characters!");
-        console.log("DUPA")
     } else {
         Add(Id, e);
     }

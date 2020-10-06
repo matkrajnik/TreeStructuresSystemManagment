@@ -1,0 +1,55 @@
+﻿@model TreeStructuresSystem.ViewModels.TreeViewModel
+
+@foreach (var node in Model.Nodes)
+{
+    var ulId = $"ul-{node.Id}";
+    var liId = $"li-{node.Id}";
+<li id="@liId" class="wholeNode">
+    @if (node.Children.Count > 0)
+    {
+        <span class="tree-collapse"><i class="fa fa-plus"></i></span>
+    }
+    else
+    {
+        <span class="pl-3"></span>
+    }
+    <p class="nodeItem d-inline-block pl-2 pr-2">@node.Name</p>
+    <span class="menu">
+        <i class="fa fa-info-circle"></i>
+    </span>
+    <div class="pl-3 btn-group btn-group-toggle text-white options hidden " data-toggle="buttons">
+        <label class="btn btn-success active">
+            <a class="add render "
+               data-id="@node.Id"
+               data-controller="TreeStructure"
+               data-action="Add"
+               data-body-message="Add node to: @node.Name">Add Node</a>
+        </label>
+        <label class="btn btn-info active">
+            <a class="edit"
+               data-id="@node.Id"
+               data-controller="TreeStructure"
+               data-action="Edit"
+               onclick="loadEdit(@node.Id)"
+               data-body-message="Editing: @node.Name">Edit</a>
+        </label>
+        <label class="btn btn-primary active">
+            <a onclick="sortListDir(@node.Id)">Sort</a>
+        </label>
+    </div>
+    <a class="btn btn-danger delete text-white ml-2 options hidden"
+       data-id="@node.Id"
+       data-body-title:"Warning!"
+       data-controller="TreeStructure"
+       data-action="Delete"
+       data-body-message="The action will remove all children a @node.Name node!">Delete</a>
+
+    @if (node.Children.Count > 0)
+    {
+        <ul id="@ulId" class="collapse show collapsive">
+            @await Component.InvokeAsync("TreeComponent", new { nodes = node.Children })
+        </ul>
+    }
+</li>
+}
+
